@@ -15,22 +15,36 @@ import (
 )
 
 type LSystem struct {
-	Definitions map[string][2]string
+	Definitions map[string]Definition
 	Rules       map[string]string
 	StartState  string
 	Iterations  int
 }
 
+type Definition struct {
+	Function string
+	Value    int
+}
+
 func (sys *LSystem) ParseForm(form url.Values) error {
 	defReg := regexp.MustCompile("^(.) = (.*)\\((.*)\\)$")
-	sys.Definitions = make(map[string][2]string)
+	sys.Definitions = make(map[string]Definition)
 
 	for _, line := range strings.Split(form.Get("definitions"), "\r\n") {
 		s := defReg.FindAllStringSubmatch(line, -1)
 		if len(s) != 1 || len(s[0]) != 4 {
 			return errors.New("could not parse definitions")
 		}
-		sys.Definitions[s[0][1]] = [2]string{s[0][2], s[0][3]}
+
+		val, err := strconv.Atoi(s[0][3])
+		if err != nil {
+			return errors.New("could not parse integer")
+		}
+
+		sys.Definitions[s[0][1]] = Definition{
+			Function: s[0][2],
+			Value:    val,
+		}
 	}
 
 	ruleReg := regexp.MustCompile("^(.) -> (.*)$")
@@ -71,24 +85,18 @@ func (sys *LSystem) Execute(t *terrapin.Terrapin) {
 	// Run turtle
 
 	for _, a := range state {
-		pair := sys.Definitions[string(a)]
-		fn := pair[0]
-		val := pair[1]
-		v, err := strconv.Atoi(val)
-		if err != nil {
-			panic(err)
-		}
+		def := sys.Definitions[string(a)]
 
-		vv := float64(v)
-		vRad := vv * (math.Pi / 180)
+		value := float64(def.Value)
+		valueRad := value * (math.Pi / 180)
 
-		switch fn {
+		switch def.Function {
 		case "fwd":
-			t.Forward(vv)
+			t.Forward(value)
 		case "left":
-			t.Left(vRad)
+			t.Left(valueRad)
 		case "right":
-			t.Right(vRad)
+			t.Right(valueRad)
 		}
 	}
 }
