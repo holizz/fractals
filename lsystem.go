@@ -20,7 +20,7 @@ type LSystem struct {
 	Iterations int
 }
 
-func (sys LSystem) ParseForm(form url.Values) error {
+func (sys *LSystem) ParseForm(form url.Values) error {
 	defReg := regexp.MustCompile("^(.) = (.*)\\((.*)\\)$")
 	sys.Definitions = make(map[string][2]string)
 
@@ -54,11 +54,21 @@ func (sys LSystem) ParseForm(form url.Values) error {
 	return nil
 }
 
-func (sys LSystem) Execute(t *terrapin.Terrapin) {
+func (sys *LSystem) Execute(t *terrapin.Terrapin) {
 	// Rewrite
 
+	state := sys.StartState
+
+	for i := 0; i < sys.Iterations; i++ {
+		for from, to := range sys.Rules {
+			state = strings.Replace(state, from, strings.ToLower(to), -1)
+		}
+
+		state = strings.ToUpper(state)
+	}
 
 	// Run turtle
+
 }
 
 func handleLSystem(r *http.Request, rr render.Render) {
