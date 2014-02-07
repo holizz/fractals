@@ -1,0 +1,20 @@
+<form>
+  <label>
+    Definitions
+    <textarea name="definitions">{{.definitions}}</textarea>
+  </label>
+
+  <label>
+    Rules
+    <textarea name="rules">{{.rules}}</textarea>
+  </label>
+
+  <label>
+    Iterations
+    <input type="number" name="iterations" value="{{.iterations}}">
+  </label>
+
+  <input type="submit">
+</form>
+
+<img src="/lsystem.png?definitions={{.definitions}}&rules={{.rules}}&iterations={{.iterations}}">
