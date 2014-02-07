@@ -14,31 +14,33 @@ import (
 )
 
 type LSystem struct {
-	Definitions [][3]string
-	Rules [][2]string
+	Definitions map[string][2]string
+	Rules map[string]string
 	StartState string
 	Iterations int
 }
 
 func (sys LSystem) ParseForm(form url.Values) error {
 	defReg := regexp.MustCompile("^(.) = (.*)\\((.*)\\)$")
+	sys.Definitions = make(map[string][2]string)
 
 	for _, line := range strings.Split(form.Get("definitions"), "\r\n") {
 		s := defReg.FindAllStringSubmatch(line, -1)
 		if len(s) != 1 || len(s[0]) != 4 {
 			return errors.New("could not parse definitions")
 		}
-		sys.Definitions = append(sys.Definitions, [3]string{s[0][1], s[0][2], s[0][3]})
+		sys.Definitions[s[0][1]] = [2]string{s[0][2], s[0][3]}
 	}
 
 	ruleReg := regexp.MustCompile("^(.) -> (.*)$")
+	sys.Rules = make(map[string]string)
 
 	for _, line := range strings.Split(form.Get("rules"), "\r\n") {
 		s := ruleReg.FindAllStringSubmatch(line, -1)
 		if len(s) != 1 || len(s[0]) != 3 {
 			return errors.New("could not parse rules")
 		}
-		sys.Rules = append(sys.Rules, [2]string{s[0][1], s[0][2]})
+		sys.Rules[s[0][1]] = s[0][2]
 	}
 
 	iterations, err := strconv.Atoi(form.Get("iterations"))
