@@ -16,6 +16,7 @@ import (
 type LSystem struct {
 	Definitions [][3]string
 	Rules [][2]string
+	StartState string
 	Iterations int
 }
 
@@ -46,6 +47,8 @@ func (sys LSystem) ParseForm(form url.Values) error {
 	}
 	sys.Iterations = iterations
 
+	sys.StartState = form.Get("startstate")
+
 	return nil
 }
 
@@ -66,6 +69,7 @@ func handleLSystem(r *http.Request, rr render.Render) {
 		"definitions": r.Form.Get("definitions"),
 		"rules": r.Form.Get("rules"),
 		"iterations": r.Form.Get("iterations"),
+		"startstate": r.Form.Get("startstate"),
 	})
 }
 

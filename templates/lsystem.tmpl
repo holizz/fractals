@@ -10,6 +10,11 @@
   </label>
 
   <label>
+    Start state
+    <input type="text" name="startstate" value="{{.startstate}}">
+  </label>
+
+  <label>
     Iterations
     <input type="number" name="iterations" value="{{.iterations}}">
   </label>
@@ -17,4 +22,4 @@
   <input type="submit">
 </form>
 
-<img src="/lsystem.png?definitions={{.definitions}}&rules={{.rules}}&iterations={{.iterations}}">
+<img src="/lsystem.png?definitions={{.definitions}}&rules={{.rules}}&iterations={{.iterations}}&startstate={{.startstate}}">
