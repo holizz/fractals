@@ -130,8 +130,13 @@ func handleLSystemPng(w http.ResponseWriter, r *http.Request, rr render.Render) 
 
 	// Execute lsystem
 
-	i := image.NewRGBA(image.Rect(0, 0, 300, 300))
-	t := terrapin.NewTerrapin(i, terrapin.Position{150.0, 150.0})
+	size := 780
+
+	i := image.NewRGBA(image.Rect(0, 0, size, size))
+	t := terrapin.NewTerrapin(i, terrapin.Position{
+		float64(size) / 2,
+		float64(size) / 2,
+	})
 
 	sys.Execute(t)
 
