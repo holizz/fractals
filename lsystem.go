@@ -6,6 +6,7 @@ import (
 	"github.com/martini-contrib/render"
 	"image"
 	"image/png"
+	"io"
 	"math"
 	"net/http"
 	"net/url"
@@ -118,14 +119,16 @@ func handleLSystem(r *http.Request, rr render.Render) {
 func handleLSystemPng(w http.ResponseWriter, r *http.Request, rr render.Render) {
 	err := r.ParseForm()
 	if err != nil {
-		panic(err)
+		turtleError(w)
+		return
 	}
 
 	// Parse form into an LSystem
 	sys := LSystem{}
 	err = sys.ParseForm(r.Form)
 	if err != nil {
-		panic(err)
+		turtleError(w)
+		return
 	}
 
 	// Execute lsystem
@@ -139,6 +142,61 @@ func handleLSystemPng(w http.ResponseWriter, r *http.Request, rr render.Render) 
 	})
 
 	sys.Execute(t)
+
+	png.Encode(w, i)
+}
+
+func turtleError(w io.Writer) {
+	size := 780
+	x := 50.0
+
+	i := image.NewRGBA(image.Rect(0, 0, size, size))
+	t := terrapin.NewTerrapin(i, terrapin.Position{
+		float64(size) / 2 - x * 5,
+		float64(size) / 2 - x * 5,
+	})
+
+	for _, c := range "ERROR" {
+		switch c {
+		case 'E':
+			t.Right(math.Pi / 2)
+			t.Forward(x)
+			t.Right(math.Pi)
+			t.Forward(x)
+			t.Left(math.Pi / 2)
+			t.Forward(x)
+			t.Left(math.Pi / 2)
+			t.Forward(x)
+			t.Right(math.Pi)
+			t.Forward(x)
+			t.Left(math.Pi / 2)
+			t.Forward(x)
+			t.Left(math.Pi / 2)
+			t.Forward(x * 2)
+			t.Left(math.Pi / 2)
+		case 'R':
+			t.Forward(x * 2)
+			for i := 0; i < 3; i++ {
+				t.Right(math.Pi / 2)
+				t.Forward(x)
+			}
+			t.Left(math.Pi * 3 / 4)
+			t.Forward(math.Hypot(x, x))
+			t.Left(math.Pi / 4)
+			t.Forward(x)
+			t.Left(math.Pi / 2)
+		case 'O':
+			for i := 0; i < 2; i++ {
+				t.Forward(x * 2)
+				t.Right(math.Pi / 2)
+				t.Forward(x)
+				t.Right(math.Pi / 2)
+			}
+			t.Right(math.Pi / 2)
+			t.Forward(x * 2)
+			t.Left(math.Pi / 2)
+		}
+	}
 
 	png.Encode(w, i)
 }
