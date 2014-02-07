@@ -12,7 +12,7 @@ func main() {
 		Layout: "layout",
 	}))
 
-	m.Get("/", func (rr render.Render) {
+	m.Get("/", func(rr render.Render) {
 		rr.HTML(200, "index", nil)
 	})
 

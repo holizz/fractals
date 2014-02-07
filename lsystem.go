@@ -16,9 +16,9 @@ import (
 
 type LSystem struct {
 	Definitions map[string][2]string
-	Rules map[string]string
-	StartState string
-	Iterations int
+	Rules       map[string]string
+	StartState  string
+	Iterations  int
 }
 
 func (sys *LSystem) ParseForm(form url.Values) error {
@@ -101,9 +101,9 @@ func handleLSystem(r *http.Request, rr render.Render) {
 
 	rr.HTML(200, "lsystem", map[string]string{
 		"definitions": r.Form.Get("definitions"),
-		"rules": r.Form.Get("rules"),
-		"iterations": r.Form.Get("iterations"),
-		"startstate": r.Form.Get("startstate"),
+		"rules":       r.Form.Get("rules"),
+		"iterations":  r.Form.Get("iterations"),
+		"startstate":  r.Form.Get("startstate"),
 	})
 }
 
