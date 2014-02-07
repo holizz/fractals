@@ -1,25 +1,53 @@
-<form>
-  <label>
-    Definitions
-    <textarea name="definitions">{{.definitions}}</textarea>
-  </label>
+<div class="jumbotron">
+  <div class="well">
+    <img src="/lsystem.png?definitions={{.definitions}}&rules={{.rules}}&iterations={{.iterations}}&startstate={{.startstate}}">
+  </div>
+</div>
 
-  <label>
-    Rules
-    <textarea name="rules">{{.rules}}</textarea>
-  </label>
+<form role="form">
+  <div class="row">
+    <div class="form-group col-xs-4">
+      <label for="definitions">Definitions</label>
+      <textarea name="definitions" id="definitions" class="form-control" rows="6">{{.definitions}}</textarea>
+    </div>
+    <div class="col-xs-6">
+      <p>Explanation...</p>
+    </div>
+  </div>
 
-  <label>
-    Start state
-    <input type="text" name="startstate" value="{{.startstate}}">
-  </label>
+  <div class="row">
+    <div class="form-group col-xs-4">
+      <label for="rules">Rules</label>
+      <textarea name="rules" id="rules" class="form-control" rows="6">{{.rules}}</textarea>
+    </div>
+    <div class="col-xs-6">
+      <p>Explanation...</p>
+    </div>
+  </div>
 
-  <label>
-    Iterations
-    <input type="number" name="iterations" value="{{.iterations}}">
-  </label>
+  <div class="row">
+    <div class="form-group col-xs-4">
+      <label for="startstate">Start state</label>
+      <input type="text" name="startstate" id="startstate" class="form-control" value="{{.startstate}}">
+    </div>
+    <div class="col-xs-6">
+      <p>Explanation...</p>
+    </div>
+  </div>
 
-  <input type="submit">
+  <div class="row">
+    <div class="form-group col-xs-4">
+      <label for="iterations">Iterations</label>
+      <input type="number" name="iterations" id="iterations" class="form-control" value="{{.iterations}}">
+    </div>
+    <div class="col-xs-6">
+      <p>Explanation...</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <input type="submit" class="btn btn-primary" value="Create">
+    </div>
+  </div>
 </form>
-
-<img src="/lsystem.png?definitions={{.definitions}}&rules={{.rules}}&iterations={{.iterations}}&startstate={{.startstate}}">
