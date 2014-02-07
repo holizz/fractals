@@ -6,6 +6,7 @@ import (
 	"github.com/martini-contrib/render"
 	"image"
 	"image/png"
+	"math"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -69,6 +70,27 @@ func (sys *LSystem) Execute(t *terrapin.Terrapin) {
 
 	// Run turtle
 
+	for _, a := range state {
+		pair := sys.Definitions[string(a)]
+		fn := pair[0]
+		val := pair[1]
+		v, err := strconv.Atoi(val)
+		if err != nil {
+			panic(err)
+		}
+
+		vv := float64(v)
+		vRad := vv * (math.Pi / 180)
+
+		switch fn {
+		case "fwd":
+			t.Forward(vv)
+		case "left":
+			t.Left(vRad)
+		case "right":
+			t.Right(vRad)
+		}
+	}
 }
 
 func handleLSystem(r *http.Request, rr render.Render) {
