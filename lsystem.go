@@ -49,6 +49,13 @@ func (sys LSystem) ParseForm(form url.Values) error {
 	return nil
 }
 
+func (sys LSystem) Execute(t *terrapin.Terrapin) {
+	// Rewrite
+
+
+	// Run turtle
+}
+
 func handleLSystem(r *http.Request, rr render.Render) {
 	err := r.ParseForm()
 	if err != nil {
@@ -78,10 +85,9 @@ func handleLSystemPng(w http.ResponseWriter, r *http.Request, rr render.Render) 
 	// Execute lsystem
 
 	i := image.NewRGBA(image.Rect(0, 0, 300, 300))
-
 	t := terrapin.NewTerrapin(i, terrapin.Position{150.0, 150.0})
 
-	t.Forward(20)
+	sys.Execute(t)
 
 	png.Encode(w, i)
 }
