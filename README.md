@@ -2,9 +2,13 @@
 
 A Web app for fractals
 
-## Demo
+## Usage
 
-https://fractals.herokuapp.com/
+    % go get github.com/holizz/fractals
+    % cd $GOPATH/src/github.com/holizz/fractals
+    % go run *.go
+
+Then visit http://localhost:3000/
 
 ## License
 
